@@ -46,10 +46,10 @@ func (c *Cache) Put(key, value string) {
 }
 
 func (c *Cache) Keys() []string {
-	k := make([]string, len(c.node))
+	k := make([]string, 0)
 	for i := 0; i < len(c.node) ; i++ {
 		if c.node[i].t.Sub(time.Now()) > 0 ||c.node[i].t.IsZero() {
-			k[i] = c.node[i].key
+			k = append(k, c.node[i].key)
 		}
 	}
 	return k
@@ -75,12 +75,14 @@ func (c *Cache) PutTill(key, value string, deadline time.Time) {
 	c.PutTill("b","1234",time.Now().Add(time.Minute*3))
 	c.Put("a","567")
 	c.Put("1", "avs")
-	c.PutTill("c","rt",time.Now())
+	c.PutTill("c","rt",time.Now().Add(time.Second*2))
 	fmt.Println(c)
 	fmt.Println(c.Get("1"))
 	fmt.Println(c.Get("5"))
 	fmt.Println(c.Get("b"))
 	fmt.Println(c.Get("c"))
+	fmt.Println(c.Keys())
+	time.Sleep(time.Second*5)
 	fmt.Println(c.Keys())
 }
 */
